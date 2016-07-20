@@ -27,7 +27,7 @@ for link in soup.find_all('a'):
     link_url = link.get('href')
     if rs_url in link_url:
         volumes.append(link_url)
-volumes = volumes[2:] # The first two urls are current issue and past issue
+volumes = volumes[2:]  # The first two urls are current issue and past issue
 
 for vol in volumes:
     b = vol.rfind("/")
@@ -60,5 +60,6 @@ for vol in volumes:
                 url_p = mdpi_url + link_url_j[1:l]
                 entry = "{0}, {1}, {2}, {3}".format(i, j, p, url_p)
                 print(entry, file=mdpi_f)
+
 # Close file
 mdpi_f.close()
