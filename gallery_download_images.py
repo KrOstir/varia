@@ -31,13 +31,16 @@ def get_images(page_url, save_folder):
         img_url = link['href']
         # If URL is image download it
         if img_url.endswith(".jpg") and gal_id in img_url:
-            img_url[img_url.index(gal_id) + len(gal_id):]
-            # print ("Downloading:", img_url)
-            print('.', end="", flush=True)
-            img_data = requests.get(img_url).content
-            img_name = save_folder + img_url[img_url.rindex("/")+1:]
-            with open(img_name, 'wb') as handler:
-                handler.write(img_data)
+            # img_url[img_url.index(gal_id) + len(gal_id):]
+            img_name = save_folder + img_url[img_url.rindex("/") + 1:]
+            if os.path.exists(img_name):
+                print('.', end="", flush=True)
+            else:
+                # print ("Downloading:", img_url)
+                print('*', end="", flush=True)
+                img_data = requests.get(img_url).content
+                with open(img_name, 'wb') as handler:
+                    handler.write(img_data)
     print("")
 
 def list_pages(base_url):
@@ -66,28 +69,30 @@ def list_pages(base_url):
     return page_gallery
 
 # Start processing images
-print("\nDownload images from the NextGEN Gallery\n")
+print("\nDownload images from the NextGEN Gallery")
 
 # List of base urls
 image_folder = "/Users/Kristof/Documents/Zacasno/GootJam Gallery/"
 # Galleries
-# base_url = "http://gootjam.net/galerija/tabor/18-7/"
-# base_url = "http://gootjam.net/galerija/tabor/19-7-drugi-dan/"
-base_url = "http://gootjam.net/galerija/tabor/20-7-tretji-dan/"
+base_urls = [
+    "http://gootjam.net/galerija/tabor/18-7/",
+    "http://gootjam.net/galerija/tabor/19-7-drugi-dan/",
+    "http://gootjam.net/galerija/tabor/20-7-tretji-dan/",
+]
 
-# Download base url
-print("URL:", base_url)
-fol_name = image_folder + base_url[(base_url[:(len(base_url)-1)].rindex("/"))+1:]
-# Check if folder exists
-if not os.path.exists(fol_name):
-    print("Creating folder:", fol_name)
-    os.makedirs(fol_name)
-
-# Get list of all galleries in base_url
-gal_list = list_pages(base_url)
-
-# Get images from all pages
-for page in gal_list:
-    get_images(page, fol_name)
+# Download all pages and all data
+for idx, base_url in enumerate(base_urls):
+    print("\n", idx+1, "/", len(base_urls))
+    print("URL:", base_url, "\n")
+    fol_name = image_folder + base_url[(base_url[:(len(base_url)-1)].rindex("/"))+1:]
+    # Check if folder exists
+    if not os.path.exists(fol_name):
+        print("Creating folder:", fol_name)
+        os.makedirs(fol_name)
+    # Get list of all galleries in base_url
+    gal_list = list_pages(base_url)
+    # Get images from all pages
+    for page in gal_list:
+        get_images(page, fol_name)
 
 print("\nFinished")
