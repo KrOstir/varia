@@ -19,7 +19,7 @@ def get_images(page_url, save_folder):
     :param page_url: URL of the page
     :param save_folder: root for saving images
     '''
-    print("Page:", page_url)
+    print("Page:", page_url, " ", end="")
     # URL positions
     gal_id = "gallery/"
     fol_id = "uploads/"
@@ -68,22 +68,45 @@ def list_pages(base_url):
         page_gallery.append(pages_base  + '%i' % (r+1) )
     return page_gallery
 
+def list_galleries(gal_url):
+    '''
+    Create a list of all galleries
+
+    :param page_url: URL of the main gallery
+    :return gal_list: list of urls with all galleries
+    '''
+    # URL positions
+    pages_url = "galerija/tabor/"
+    page = requests.get(gal_url).text
+    soup = BeautifulSoup(page, 'html.parser')
+    gal_num = 1
+    gal_list = []
+    # Check all URLs
+    for link in soup.find_all('a', href=True):
+        link_url = link['href']
+        if pages_url in link_url and link_url != gal_url:
+            gal_list.append(link_url)
+    # Find unique links and sorted them
+    gal_list = sorted(list(set(gal_list)))
+    return gal_list
+
 # Start processing images
 print("\nDownload images from the NextGEN Gallery")
 
-# List of base urls
-image_folder = "/Users/Kristof/Documents/Zacasno/GootJam Gallery/"
-# Galleries
-base_urls = [
-    "http://gootjam.net/galerija/tabor/18-7/",
-    "http://gootjam.net/galerija/tabor/19-7-drugi-dan/",
-    "http://gootjam.net/galerija/tabor/20-7-tretji-dan/",
-]
+# Folder for storing images
+# image_folder = "/Users/Kristof/Documents/Zacasno/GootJam Gallery/"
+image_folder = "/Users/Kristof/Dropbox/GootJam/"
+# Gallery location
+gallery_url = "http://gootjam.net/galerija/tabor/"
+
+base_urls = list_galleries(gallery_url)
+
+print("\nSaving images to:", image_folder)
 
 # Download all pages and all data
 for idx, base_url in enumerate(base_urls):
     print("\n", idx+1, "/", len(base_urls))
-    print("URL:", base_url, "\n")
+    print("URL:", base_url)
     fol_name = image_folder + base_url[(base_url[:(len(base_url)-1)].rindex("/"))+1:]
     # Check if folder exists
     if not os.path.exists(fol_name):
