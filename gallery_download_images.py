@@ -26,12 +26,14 @@ def get_images(page_url, save_folder):
     # Download page from URL
     page = requests.get(page_url).text
     soup = BeautifulSoup(page, 'html.parser')
+    gal_tot = 0
+    gal_new = 0
     # Check all URLs
     for link in soup.find_all('a', href=True):
         img_url = link['href']
         # If URL is image download it
         if img_url.endswith(".jpg") and gal_id in img_url:
-            # img_url[img_url.index(gal_id) + len(gal_id):]
+            gal_tot += 1
             img_name = save_folder + img_url[img_url.rindex("/") + 1:]
             if os.path.exists(img_name):
                 print('.', end="", flush=True)
@@ -41,7 +43,9 @@ def get_images(page_url, save_folder):
                 img_data = requests.get(img_url).content
                 with open(img_name, 'wb') as handler:
                     handler.write(img_data)
+                gal_new += 1
     print("")
+    return gal_tot, gal_new
 
 def list_pages(base_url):
     '''
@@ -98,10 +102,13 @@ print("\nDownload images from the NextGEN Gallery")
 image_folder = "/Users/Kristof/Dropbox/GootJam/"
 # Gallery location
 gallery_url = "http://gootjam.net/galerija/tabor/"
-
 base_urls = list_galleries(gallery_url)
+# Total number of images, new images
+all_tot = 0
+all_new = 0
 
-print("\nSaving images to:", image_folder)
+print("\nDownloading from:", gallery_url)
+print("Saving images to:", image_folder)
 
 # Download all pages and all data
 for idx, base_url in enumerate(base_urls):
@@ -115,7 +122,18 @@ for idx, base_url in enumerate(base_urls):
     # Get list of all galleries in base_url
     gal_list = list_pages(base_url)
     # Get images from all pages
+    gal_tot = 0
+    gal_new = 0
     for page in gal_list:
-        get_images(page, fol_name)
+        page_tot, page_new = get_images(page, fol_name)
+        gal_tot += page_tot
+        gal_new += page_new
+    print(" Total images:", gal_tot)
+    print(" New images  :", gal_new)
+    all_tot += gal_tot
+    all_new += gal_new
 
-print("\nFinished")
+print("\nFinished downloading images")
+print("Checked galleries :", len(base_urls))
+print("Total images      :", all_tot)
+print("New images        :", all_new)
