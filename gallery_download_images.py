@@ -9,6 +9,8 @@
 # Load libraries
 import os
 import requests
+import time
+import smtplib
 from bs4 import BeautifulSoup
 
 
@@ -94,8 +96,34 @@ def list_galleries(gal_url):
     gal_list = sorted(list(set(gal_list)))
     return gal_list
 
+
+def send_email(recipient, new_images):
+
+    gmail_user = "krostir"
+    gmail_pwd = "googleKristof2014"
+    FROM = "krostir"
+    TO = recipient if type(recipient) is list else [recipient]
+    SUBJECT = "GootJam nove slike"
+    TEXT = "Nove slike v galeriji GootJam: " + str(new_images) + "\nPoglej https://www.dropbox.com/home/GootJam\n\nPozdrav, Kristof"
+
+    # Prepare actual message
+    message = """From: %s\nTo: %s\nSubject: %s\n\n%s
+    """ % (FROM, ", ".join(TO), SUBJECT, TEXT)
+    try:
+        server = smtplib.SMTP("smtp.gmail.com", 587)
+        server.ehlo()
+        server.starttls()
+        server.login(gmail_user, gmail_pwd)
+        server.sendmail(FROM, TO, message)
+        server.close()
+        print ("Mail successfully sent")
+    except:
+        print ("Failed to send mail")
+
 # Start processing images
 print("\nDownload images from the NextGEN Gallery")
+
+start = time.time()
 
 # Folder for storing images
 # image_folder = "/Users/Kristof/Documents/Zacasno/GootJam Gallery/"
@@ -133,7 +161,17 @@ for idx, base_url in enumerate(base_urls):
     all_tot += gal_tot
     all_new += gal_new
 
+# Send mail if new images are available
+if all_new > 0:
+    send_email("krostir@gmail.com", all_new)
+    send_email("tadeja.ostir@gmail.com", all_new)
+
+end = time.time()
+
 print("\nFinished downloading images")
 print("Checked galleries :", len(base_urls))
 print("Total images      :", all_tot)
 print("New images        :", all_new)
+time_min = (end - start) // 60
+time_sec = (end - start) % 60
+print("Time elapsed      : %i:%02i" % (time_min, time_sec))
