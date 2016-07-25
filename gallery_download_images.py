@@ -126,7 +126,6 @@ print("\nDownload images from the NextGEN Gallery")
 start = time.time()
 
 # Folder for storing images
-# image_folder = "/Users/Kristof/Documents/Zacasno/GootJam Gallery/"
 image_folder = "/Users/Kristof/Dropbox/GootJam/"
 # Gallery location
 gallery_url = "http://gootjam.net/galerija/tabor/"
