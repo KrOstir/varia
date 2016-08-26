@@ -61,6 +61,7 @@ for idx, dof in enumerate(dof_to_list):
     for i in dof_list:
         if dof in i:
             copy2(i, dof_res)
+            copy2(os.path.splitext(i)[0] + '.tfw', dof_res)
             found = True
     if not found:
         print(dof, 'not available in', dof_orig)
