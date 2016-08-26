@@ -41,19 +41,22 @@ vrt_fn = '/Users/Kristof/Documents/Python/Varia/dof_prepare.vrt'
 # Filename location
 vrt_tag = '<SourceFilename relativeToVRT="1">'
 # Original file location
-dof_orig = '/Volumes/arhiv_gurs/DOF/DOF_2015_050/'
+# dof_orig = '/Volumes/arhiv_gurs/DOF/DOF_2015_050/'
+dof_orig = '/Volumes/arhiv_gurs/DOF/DOF_2015_050_IR/'
 # Resulting file location
+# dof_res = '/Users/Kristof/Documents/Zacasno/QGISTraining/data_slo/DOF'
 dof_res = '/Users/Kristof/Documents/Zacasno/QGISTraining/data_slo/DOF_IR'
 
 # Find list of files to be processed
 dof_to_list = dof_querry_vrt(vrt_fn)
-print('%d DOFs to be extracted' % len(dof_to_list))
+dof_to_list_len = len(dof_to_list)
+print('%d DOFs to be extracted' % dof_to_list_len)
 
 # Find list of available files
 dof_list = dof_querry(dof_orig)
 
-for dof in dof_to_list:
-    print('Processing', dof)
+for idx, dof in enumerate(dof_to_list):
+    print('Processing %d/%d: %s' % (idx+1, dof_to_list_len, dof))
     found = False
     for i in dof_list:
         if dof in i:
