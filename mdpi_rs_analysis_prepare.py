@@ -18,7 +18,7 @@ mdpi_file_out = "mdpi_rs_analysis.csv"
 print("Analyzing ", mdpi_url+rs_url)
 
 mdpi_f = open(mdpi_file_out, 'w+')
-print("Volume, Issue, Paper, URL", file=mdpi_f)
+print("Volume,Issue,Paper,URL", file=mdpi_f)
 
 # Find volumes
 mdpi_r = requests.get(mdpi_url+rs_url)
