@@ -27,6 +27,7 @@ mdpi = mdpi.sort_values(by=['Volume', 'Issue', 'Paper'])
 # Group by volume and issue, count papers
 mdpi_gr_vi = pd.DataFrame(mdpi.groupby(['Volume', 'Issue'])['Paper'].count().reset_index(name = 'Papers'))
 mdpi_gr_v = pd.DataFrame(mdpi.groupby(['Volume'])['Paper'].count().reset_index(name = 'Papers'))
+mdpi_gr_v['Year'] = 2008 + mdpi_gr_v['Volume']
 # mdpi_gr_vp = pd.DataFrame(mdpi.groupby(['Volume'])['Pages'].mean().reset_index(name = 'Papers'))
 # Average number of pages per volume
 # print('Pages per paper', mdpi_gr_vp['Papers'][0:6].mean())
