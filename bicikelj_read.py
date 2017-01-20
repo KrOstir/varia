@@ -1,3 +1,5 @@
+# coding: utf-8
+# 
 # Read BicikeLJ station data
 #
 # Read XML BicikeLJ station data, parse XML and store data
@@ -8,42 +10,49 @@
 # (c) 2017
 
 # Imports
-import urllib.request
-import xml.etree.ElementTree as ET
+from urllib.request import urlopen
+import json
 import numpy as np
 import pandas as pd
-from datetime import datetime
+import datetime
 
 # Parameters
-# Base XML url
-base_url = "http://www.bicikelj.si/service/stationdetails/ljubljana/"
-# Station parameters
-station_pars = ['station_id', 'available', 'free', 'total', 'ticket', 'open', 'updated', 'connected']
-station_list = range(1,39)
+# API Key 
+bicikelj_api_key= "0a494317d60d3d556d0755600b078ea6b26af90f"
+# Bycicle, station dynamic infos
+station_data_url = "https://api.jcdecaux.com/vls/v1/stations?contract=Ljubljana&apiKey=" + bicikelj_api_key
+# Outtut file
+station_data_fn = "bicikelj_station_data.csv"
+bicikelj_log = "bicikelj_read.log"
 
-# For all stations
-station_table = []
-for station in station_list:
-    station_xml_req = urllib.request.urlopen(base_url+str(station))
-    station_xml_data = station_xml_req.read()
+# Open log file, all messages are written to log
+log_file = open(bicikelj_log, "a")
 
-    tree = ET.fromstring(station_xml_data)
-
-    row_data = [station]
-    for c in tree:
-        row_data.append(int(c.text))
-    station_table.append(row_data)
-
-    # bicikelj_data = pd.DataFrame(columns=row_names, dtype=int)
-    #bicikelj_data = pd.DataFrame()
-
-    # bicikelj_series = pd.Series(row_data, row_names, dtype=int)
-
-    # bicikelj_data = bicikelj_data.append(bicikelj_series, ignore_index=True)
-    # bicikelj_data = bicikelj_data.append([row_data], ignore_index=True)
-
-    #print(bicikelj_data)
-
-station_df = pd.DataFrame(station_table, columns=station_pars)
-#station_df["date"] =
-print(station_df)
+print("BicikeLJ", datetime.datetime.now().strftime("%Y-%m-%d %I:%M:%S"), file=log_file)
+ 
+# Read station data
+response = urlopen(station_data_url)
+if response.code == 200:
+    data = response.read().decode('utf-8')
+else:
+    print("Wrong API response", station_data_url, file=log_file)
+    raise
+station_data_json = json.loads(data)
+station_data = pd.DataFrame(station_data_json).sort_values(["number"]).reset_index(drop=True)
+station_data_real = station_data[['available_bike_stands', 'available_bikes', 'banking', 'bike_stands',
+                                 'bonus', 'last_update', 'number', 'status']].copy()
+station_data_real["last_update_time"] = pd.to_datetime(station_data_real["last_update"]*1e6)
+station_data_real.drop(["last_update"], 1)
+station_data_real = station_data_real.set_index(["last_update_time"])
+# Add to file
+try:
+    station_data_full = pd.read_csv(station_data_fn, index_col="last_update_time")
+    len_before = len(station_data_full.index)
+    station_data_full = station_data_full.append(station_data_real).drop_duplicates()
+    len_after = len(station_data_full.index)
+    station_data_full.to_csv(station_data_fn, index=True)
+    print("Added", len_after-len_before, file=log_file)
+except:
+    station_data_real.to_csv(station_data_fn, index=True)
+    len_after = len(station_data_real.index)
+    print("Added", len_after, file=log_file)
