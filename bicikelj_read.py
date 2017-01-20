@@ -28,14 +28,14 @@ bicikelj_log = "bicikelj_read.log"
 # Open log file, all messages are written to log
 log_file = open(bicikelj_log, "a")
 
-print("BicikeLJ", datetime.datetime.now().strftime("%Y-%m-%d %I:%M:%S"), file=log_file)
+print("BicikeLJ", datetime.datetime.now().strftime("%Y-%m-%d %I:%M:%S"), sep=",", end=",", file=log_file)
  
 # Read station data
 response = urlopen(station_data_url)
 if response.code == 200:
     data = response.read().decode('utf-8')
 else:
-    print("Wrong API response", station_data_url, file=log_file)
+    print(0, "Wrong API response", sep=",", file=log_file)
     raise
 station_data_json = json.loads(data)
 station_data = pd.DataFrame(station_data_json).sort_values(["number"]).reset_index(drop=True)
@@ -51,8 +51,8 @@ try:
     station_data_full = station_data_full.append(station_data_real).drop_duplicates()
     len_after = len(station_data_full.index)
     station_data_full.to_csv(station_data_fn, index=True)
-    print("Added", len_after-len_before, file=log_file)
+    print(len_after-len_before, "Added", sep=",", file=log_file)
 except:
     station_data_real.to_csv(station_data_fn, index=True)
     len_after = len(station_data_real.index)
-    print("Added", len_after, file=log_file)
+    print(len_after, "Added", sep=",", file=log_file)
