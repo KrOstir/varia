@@ -2,7 +2,7 @@
 # 
 # Read BicikeLJ station data
 #
-# Read XML BicikeLJ station data, parse XML and store data
+# Read JSON BicikeLJ station data, parse and store data
 # for all stations
 #
 # Kristof Ostir, 2017-01-17
@@ -19,16 +19,16 @@ import datetime
 # Parameters
 # API Key 
 bicikelj_api_key= "0a494317d60d3d556d0755600b078ea6b26af90f"
-# Bycicle, station dynamic infos
+# Bicycle, station dynamic infos
 station_data_url = "https://api.jcdecaux.com/vls/v1/stations?contract=Ljubljana&apiKey=" + bicikelj_api_key
-# Outtut file
+# Output file
 station_data_fn = "bicikelj_station_data_" + datetime.datetime.now().strftime('%y%m') + ".csv"
 bicikelj_log = "bicikelj_read_" + datetime.datetime.now().strftime('%y%m') + ".log"
 
 # Open log file, all messages are written to log
 log_file = open(bicikelj_log, "a")
 
-print("BicikeLJ", datetime.datetime.now().strftime("%Y-%m-%d %I:%M:%S"), sep=",", end=",", file=log_file)
+print("BicikeLJ", datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), sep=",", end=",", file=log_file)
  
 # Read station data
 response = urlopen(station_data_url)
@@ -43,12 +43,12 @@ station_data_real = station_data[['available_bike_stands', 'available_bikes', 'b
                                  'last_update', 'number']].copy()
 station_data_real["last_update_time"] = pd.to_datetime(station_data_real["last_update"]*1e6)
 station_data_real = station_data_real.drop(["last_update"], 1)
-station_data_real = station_data_real.set_index(["last_update_time"])
+station_data_real = station_data_real.set_index(["last_update_time"]).sort_index()
 # Add to file
 try:
     station_data_full = pd.read_csv(station_data_fn, index_col="last_update_time")
     len_before = len(station_data_full.index)
-    station_data_full = station_data_full.append(station_data_real).drop_duplicates()
+    station_data_full = station_data_full.append(station_data_real).drop_duplicates().sort_index()
     len_after = len(station_data_full.index)
     station_data_full.to_csv(station_data_fn, index=True)
     print(len_after-len_before, "Added", sep=",", file=log_file)
