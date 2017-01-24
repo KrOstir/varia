@@ -59,7 +59,7 @@ meteo_data_df = meteo_data_df.set_index('DateTime')
 meteo_data_df = meteo_data_df.drop_duplicates().sort_index()
 # Add to file
 try:
-    meteo_data_full = pd.read_csv(meteo_data_fn, index_col="DateTime")
+    meteo_data_full = pd.read_csv(meteo_data_fn, index_col="DateTime", parse_dates=True)
     len_before = len(meteo_data_full.index)
     meteo_data_full = meteo_data_full.append(meteo_data_df).drop_duplicates().sort_index()
     len_after = len(meteo_data_full.index)

@@ -46,7 +46,7 @@ station_data_real = station_data_real.drop(["last_update"], 1)
 station_data_real = station_data_real.set_index(["last_update_time"]).sort_index()
 # Add to file
 try:
-    station_data_full = pd.read_csv(station_data_fn, index_col="last_update_time")
+    station_data_full = pd.read_csv(station_data_fn, index_col="last_update_time", parse_dates=True)
     len_before = len(station_data_full.index)
     station_data_full = station_data_full.append(station_data_real).drop_duplicates().sort_index()
     len_after = len(station_data_full.index)
