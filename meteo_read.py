@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 import numpy as np
 import pandas as pd
 import datetime
+import pytz
 
 # Parameters
 # Station ID
@@ -26,6 +27,8 @@ meteo_xml = meteo_xml_head + meteo_station_ID + meteo_xml_tail
 # Output file
 meteo_data_fn = "meteo_data_" + datetime.datetime.now().strftime('%y%m') + ".csv"
 meteo_log = "meteo_data_" + datetime.datetime.now().strftime('%y%m') + ".log"
+# Time zone
+local_tz = pytz.timezone('Europe/Ljubljana')
 
 # Open log file, all messages are written to log
 log_file = open(meteo_log, "a")
@@ -57,6 +60,8 @@ meteo_data_df = pd.DataFrame(meteo_data)
 meteo_data_df.columns = ['DateTime', 'Temp', 'Perc', 'Wind', 'Pres', 'Cond']
 meteo_data_df = meteo_data_df.set_index('DateTime')
 meteo_data_df = meteo_data_df.drop_duplicates().sort_index()
+# Data is in UTC, change to local time, than remove time zone info
+meteo_data_df.index = meteo_data_df.index.tz_localize(pytz.utc).tz_convert(local_tz).tz_localize(None)
 # Add to file
 try:
     meteo_data_full = pd.read_csv(meteo_data_fn, index_col="DateTime", parse_dates=True)

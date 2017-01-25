@@ -15,6 +15,7 @@ import json
 import numpy as np
 import pandas as pd
 import datetime
+import pytz
 
 # Parameters
 # API Key 
@@ -23,7 +24,9 @@ bicikelj_api_key= "0a494317d60d3d556d0755600b078ea6b26af90f"
 station_data_url = "https://api.jcdecaux.com/vls/v1/stations?contract=Ljubljana&apiKey=" + bicikelj_api_key
 # Output file
 station_data_fn = "bicikelj_station_data_" + datetime.datetime.now().strftime('%y%m') + ".csv"
-bicikelj_log = "bicikelj_read_" + datetime.datetime.now().strftime('%y%m') + ".log"
+bicikelj_log = "bicikelj_station_data_" + datetime.datetime.now().strftime('%y%m') + ".log"
+# Time zone
+local_tz = pytz.timezone('Europe/Ljubljana')
 
 # Open log file, all messages are written to log
 log_file = open(bicikelj_log, "a")
@@ -44,6 +47,8 @@ station_data_real = station_data[['available_bike_stands', 'available_bikes', 'b
 station_data_real["last_update_time"] = pd.to_datetime(station_data_real["last_update"]*1e6)
 station_data_real = station_data_real.drop(["last_update"], 1)
 station_data_real = station_data_real.set_index(["last_update_time"]).sort_index()
+# Data is in UTC, change to local time, than remove time zone info
+station_data_real.index = station_data_real.index.tz_localize(pytz.utc).tz_convert(local_tz).tz_localize(None)
 # Add to file
 try:
     station_data_full = pd.read_csv(station_data_fn, index_col="last_update_time", parse_dates=True)
