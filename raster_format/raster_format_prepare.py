@@ -9,17 +9,26 @@
 
 # Imports
 import os
+import sys
+from osgeo import gdal
 
 # Original file, GeoTIFF, float
-raster_original = "D:/GeoData/Sentinel/s2/S2A_MSIL2A_V20160107T101243_20160107T200822_20m/S2A_OPER_MSI_L2A_20160107T200822_R122_V20160107T101243__ms_p2atm_gk.tif"
+# raster_original = "D:/GeoData/Sentinel/s2_space/S2A_MSIL2A_V20160107T101243_20160107T200822_20m/S2A_OPER_MSI_L2A_20160107T200822_R122_V20160107T101243__ms_p2atm_gk.tif"
+raster_original = "D:/GeoData/Sentinel/s2_space/S2A_MSIL2A_V20160814T100032_20160814T234109_10m/S2A_OPER_MSI_L2A_20160814T234109_R122_V20160814T100032__ms_p2atm_gk.tif"
+raster_original_root = raster_original.split("/")[-1][:4] + raster_original.split("/")[-1][17:25]
 # Output
 raster_conv = "D:/GeoData/Sentinel/format/"
-raster_conv_name = raster_conv + "s2_20160107"
+raster_conv_name = raster_conv + raster_original_root
 raster_conv_name_float = raster_conv_name + "_gtiff_float.tif"
 raster_conv_name_int = raster_conv_name + "_gtiff_int.tif"
 gdal_tr = "gdal_translate -a_srs EPSG:3912 -of %s %s %s"
 gdal_tr_int = "gdal_translate -a_srs EPSG:3912 -ot Int16 -of %s %s %s"
 gdal_calc = "gdal_calc -A %s --A_band=%s --outfile=%s --calc=\"A*1000\""
+
+# Check if file exists
+if not os.path.exists(raster_original):
+    print("%s does not exist." % (raster_original))
+    sys.exit("File does not exist")
 
 # Float
 # Copy original GeoTiff
@@ -33,8 +42,12 @@ translate = gdal_tr % ("ENVI", raster_original, raster_conv_name + "_envi_float"
 os.system(translate)
 
 # Convert to integer, multiply by 1000
+# Number of bands in original
+raster_original_im = gdal.Open(raster_original)
+bands = raster_original_im.RasterCount
+print(bands)
 results = []
-for i in range(1, 11):
+for i in range(1, bands+1):
     print(i, end=".")
     out_fn = "D:/GeoData/Sentinel/format/" + "raster_%s.tif" % i
     results.append(out_fn)
