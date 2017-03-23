@@ -1,6 +1,6 @@
 # Prepare raster for processing speed comparision
 #
-# REad Sentinel-2 data, save in GeoTIFF, Erdas, JPEG 2000, ENVI as
+# Read Sentinel-2 data, save in GeoTIFF, Erdas, JPEG 2000, ENVI as
 # float and integer
 #
 # Kristof Ostir, 2017-01-24
