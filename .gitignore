@@ -1,15 +1,17 @@
-.ipynb_checkpoints/
+# Folders
 .idea/
+.ipynb_checkpoints/
 .vs/
 __pycache__/
-*.py[cod]
-*$py.class
+meteo_data/
 # Extensions
-*.sln
-*.pyproj
-*.user
-*.vrt
-*.xlsx
+*$py.class
 *.csv
 *.log
 *.pdf
+*.py[cod]
+*.pyproj
+*.sln
+*.user
+*.vrt
+*.xlsx
