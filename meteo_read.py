@@ -1,6 +1,6 @@
 # coding: utf-8
 # 
-# Read meteorologicla data
+# Read meteorologic data
 #
 # Read XML meteorological data, parse XML and store data
 # in CSV by month
