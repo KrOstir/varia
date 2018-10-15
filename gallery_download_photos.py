@@ -41,26 +41,17 @@ for link in soup.find_all('a', href=True):
     # If URL is image download it
     if img_url.endswith(".jpg") and gal_id in img_url:
         img_urls.append(img_url) 
-len(img_urls)
 
 # Download all images from list
-skip = 0
-skip_yn = False
-for link in img_urls:
+gal_num = len(img_urls)
+for i, link in enumerate(img_urls, start=1):
     img_fn = link[link.rindex("/") + 1:]
     img_name = image_folder + img_fn
     if os.path.exists(img_name):
         skip_yn = True
-        print('.', end="", flush=True)
-        skip += 1
-        if skip > 100:
-            print()
-            skip = 0
+        print("%d/%d Exists - skipping" % (i, gal_num))
     else:
-        if skip_yn:
-            print()
-            skip_yn = False
-        print("Downloading", img_fn)
+        print("%d/%d Downloading -" % (i, gal_num), img_fn)
         img_data = requests.get(link).content
         with open(img_name, 'wb') as handler:
             handler.write(img_data)
