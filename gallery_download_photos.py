@@ -26,7 +26,9 @@ print("Downloading images")
 print("URL:", gallery_url)
 
 # Download page from URL
+print("Reading ...")
 page = requests.get(gallery_url).text
+print("Parsing ...")
 soup = BeautifulSoup(page, 'html.parser')
 
 # Total and new images
@@ -35,6 +37,7 @@ gal_new = 0
 img_urls = []
 
 # Check all URLs
+print("Finding images ...")
 img_urls = []
 for link in soup.find_all('a', href=True):
     img_url = link['href']
@@ -43,6 +46,7 @@ for link in soup.find_all('a', href=True):
         img_urls.append(img_url) 
 
 # Download all images from list
+print("Downloading images ...")
 gal_num = len(img_urls)
 for i, link in enumerate(img_urls, start=1):
     img_fn = link[link.rindex("/") + 1:]
