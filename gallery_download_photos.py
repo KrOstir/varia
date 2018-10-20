@@ -43,9 +43,9 @@ for link in soup.find_all('a', href=True):
     img_url = link['href']
     # If URL is image download it
     if img_url.endswith(".jpg") and gal_id in img_url:
-        img_urls.append(img_url) 
+        img_urls.append(img_url)
 
-# Download all images from list
+    # Download all images from list
 print("Downloading images ...")
 gal_num = len(img_urls)
 for i, link in enumerate(img_urls, start=1):
@@ -65,4 +65,3 @@ print("")
 print("Finished")
 print("Gallery:", len(img_urls))
 print("New    :", gal_new)
-
