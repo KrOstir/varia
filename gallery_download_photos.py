@@ -1,42 +1,43 @@
 # coding: utf-8
-
+#%%
 # Download images from the NextGEN Gallery (WordPress)
 # 
 # Use list of base URLs and download all images in the gallery.
 # 
 # Krištof Oštir  
 # 2018-09-19
+#%%
 
-# Load libraries
+#%% Load libraries
 import os
 import requests
 import time
 import smtplib
 from bs4 import BeautifulSoup
 
-# Folder for storing images
+#%% Folder for storing images
 image_folder = "D:/Kristof/Dropbox/Foto/Taborjenje 2018/"
 # Gallery location
 gallery_url = "http://taborniki.net/galerija/taborjenje-2018/"
 # URL positions
 gal_id = "gallery/"
 
-# Start processing
+#%% Start processing
 print("Downloading images")
 print("URL:", gallery_url)
 
-# Download page from URL
+#%% Download page from URL
 print("Reading ...")
 page = requests.get(gallery_url).text
 print("Parsing ...")
 soup = BeautifulSoup(page, 'html.parser')
 
-# Total and new images
+#%% Total and new images
 gal_new = 0
 # Image URl list
 img_urls = []
 
-# Check all URLs
+#%% Check all URLs
 print("Finding images ...")
 img_urls = []
 for link in soup.find_all('a', href=True):
@@ -45,7 +46,7 @@ for link in soup.find_all('a', href=True):
     if img_url.endswith(".jpg") and gal_id in img_url:
         img_urls.append(img_url)
 
-    # Download all images from list
+#%% Download all images from list
 print("Downloading images ...")
 gal_num = len(img_urls)
 for i, link in enumerate(img_urls, start=1):
@@ -62,6 +63,7 @@ for i, link in enumerate(img_urls, start=1):
             gal_new += 1
 print("")
 
+#%% End
 print("Finished")
 print("Gallery:", len(img_urls))
 print("New    :", gal_new)
