@@ -20,10 +20,11 @@
 # (c) 2018
 
 # Imports
-import datetime
-import os
-import pandas as pd
 import requests
+import os
+import json
+import pandas as pd
+import datetime
 
 # Basic URL for queries
 meteo_url = "http://www.vreme.si"
@@ -43,7 +44,7 @@ meteo_prod = {
     'wind': "inca_wind_data",
     'hail': "inca_hp_data",
     'radar': "inca_si0zm_data"
-}
+    }
 
 # Downland images for hail and radar
 print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), end="", file=log_file)
