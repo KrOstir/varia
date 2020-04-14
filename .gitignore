@@ -4,6 +4,8 @@
 .vs/
 __pycache__/
 meteo_data/
+SkyView/
+.vscode/
 # Extensions
 *$py.class
 *.csv
@@ -14,4 +16,3 @@ meteo_data/
 *.user
 *.vrt
 *.xlsx
-SkyView/
