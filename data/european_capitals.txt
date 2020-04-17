@@ -1,0 +1,204 @@
+European States
+European Capitals
+Lat / Lon
+Alt
+Albania
+Tirane / Tirana
++41.3317 / +19.8172
+104
+Andorra
+Andorra la Vella
++42.5075 / +1.5218
+1409
+Austria
+Vienna
++48.2092 / +16.3728
+170
+Belarus
+Minsk
++53.9678 / +27.5766
+198
+Belgium
+Bruxelles / Brussels
++50.8371 / +4.3676
+76
+Bosnia and Herzegovina
+Sarajevo
++43.8608 / +18.4214
+577
+Bulgaria
+Sofiya / Sofia
++42.7105 / +23.3238
+591
+Croatia
+Zagreb
++45.8150 / +15.9785
+130
+Czech Republic
+Praha / Prague
++50.0878 / +14.4205
+244
+Denmark
+Kobenhavn / Copenhagen
++55.6763 / +12.5681
+0
+Estonia
+Tallinn
++59.4389 / +24.7545
+37
+Finland
+Helsinki
++60.1699 / +24.9384
+25
+France
+Paris
++48.8567 / +2.3510
+34
+Germany
+Berlin
++52.5235 / +13.4115
+34
+Greece
+Athinai / Athens
++37.9792 / +23.7166
+153
+Hungary
+Budapest
++47.4984 / +19.0408
+102
+Iceland
+Reykjavik
++64.1353 / -21.8952
+15
+Ireland
+Dublin
++53.3441 / -6.2675
+8
+Italy
+Roma / Rome
++41.8955 / +12.4823
+14
+Kosovo
+Prishtine / Pristina
++42.6740 / +21.1788
+652
+Latvia
+Riga
++56.9465 / +24.1049
+8
+Liechtenstein
+Vaduz
++47.1411 / +9.5215
+601
+Lithuania
+Vilnius
++54.6896 / +25.2799
+124
+Luxembourg
+Luxembourg
++49.6100 / +6.1296
+273
+Malta
+Valletta
++35.9042 / +14.5189
+0
+Moldova
+Chisinau
++47.0167 / +28.8497
+80
+Monaco
+Monaco
++43.7325 / +7.4189
+0
+Montenegro
+Podgorica
++42.4602 / +19.2595
+61
+Netherlands
+Amsterdam
++52.3738 / +4.8910
+-1
+North Macedonia
+Skopje
++42.0024 / +21.4361
+243
+Norway
+Oslo
++59.9138 / +10.7387
+12
+Poland
+Warszawa / Warsaw
++52.2297 / +21.0122
+93
+Portugal
+Lisboa / Lisbon
++38.7072 / -9.1355
+15
+Romania
+Bucuresti / Bucharest
++44.4479 / +26.0979
+70
+Russia
+Moskva / Moscow
++55.7558 / +37.6176
+124
+San Marino
+San Marino
++43.9424 / +12.4578
+328
+Serbia
+Beograd / Belgrade
++44.8048 / +20.4781
+116
+Slovakia
+Bratislava
++48.2116 / +17.1547
+131
+Slovenia
+Ljubljana
++46.0514 / +14.5060
+281
+Spain
+Madrid
++40.4167 / -3.7033
+588
+Sweden
+Stockholm
++59.3328 / +18.0645
+15
+Switzerland
+Bern
++46.9480 / +7.4481
+513
+Ukraine
+Kyiv / Kiev
++50.4422 / +30.5367
+168
+United Kingdom
+London
++51.5002 / -0.1262
+14
+Faroe Islands (DK)
+Torshavn (on Streymoy)
++62.0177 / -6.7719
+0
+Gibraltar (UK)
+Gibraltar
++36.1377 / -5.3453
+447
+Guernsey (UK)
+Saint Peter Port
++49.4660 / -2.5522
+0
+Isle of Man (UK)
+Douglas
++54.1670 / -4.4821
+34
+Jersey (UK)
+Saint Helier
++49.1919 / -2.1071
+0
+Svalbard (NO)
+Longyearbyen
++78.2186 / +15.6488
+199
