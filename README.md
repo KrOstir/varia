@@ -2,5 +2,5 @@
 
 Various Python scripts.
 
-Kristof Ostir
+Krištof Oštir
     
