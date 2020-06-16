@@ -58,9 +58,9 @@ fd_df.columns
 # %%
 fd_df.drop(['Ime in priimek', 'Račun', 'Valuta'], inplace=True, axis=1)
 
-# %%
-plt.plot(fd_df['V dobro'])
-plt.show()
+    # %%
+    plt.plot(fd_df['V dobro'])
+    plt.show()
 
 # %%
 plt.plot(fd_df['V breme'])
@@ -77,3 +77,4 @@ plt.show()
 plt.plot(fd_df['V dobro'])
 plt.plot(-fd_df['V breme'])
 plt.show()
+
