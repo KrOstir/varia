@@ -4,9 +4,9 @@
 # %%
 # Libraries
 import glob
-import pandas as pd
+
 import matplotlib.pyplot as plt
-import numpy as np
+import pandas as pd
 
 # %%
 # Path to data
@@ -67,7 +67,7 @@ geni_df['Mesec'] = geni_df['Mesec'].apply(data_replace)
 # Convert MM-YY to datetime
 geni_df['Mesec'] = pd.to_datetime(geni_df['Mesec'], format='%m-%y') \
  \
-# %%
+    # %%
 # Set index
 geni_df.set_index('Mesec', inplace=True)
 

@@ -2,12 +2,13 @@
 # Analyse financial data
 # Import data from Gorenjska banka and perform financial analysis.
 
+import glob
+from io import StringIO
+
+import matplotlib.pyplot as plt
 # %%
 # Libraries
 import pandas as pd
-import matplotlib.pyplot as plt
-from io import StringIO
-import glob
 
 # %%
 # Path
@@ -16,6 +17,7 @@ fd_path = './data/finance/'
 # %%
 # All files
 fd_files = glob.glob(fd_path + "/promet_izvoz_*.txt")
+
 
 # %%
 def data_replace(data):
@@ -34,6 +36,7 @@ def data_replace(data):
         data = data.replace(pair[0], pair[1])
 
     return data
+
 
 # %%
 # Read DFs
@@ -58,15 +61,15 @@ fd_df.columns
 # %%
 fd_df.drop(['Ime in priimek', 'Račun', 'Valuta'], inplace=True, axis=1)
 
-    # %%
-    plt.plot(fd_df['V dobro'])
-    plt.show()
+# %%
+plt.plot(fd_df['V dobro'])
+plt.show()
 
 # %%
 plt.plot(fd_df['V breme'])
 plt.show()
 
-#%%
+# %%
 fd_df['InOut'] = fd_df['V dobro'] - fd_df['V breme']
 
 # %%
@@ -77,4 +80,3 @@ plt.show()
 plt.plot(fd_df['V dobro'])
 plt.plot(-fd_df['V breme'])
 plt.show()
-
