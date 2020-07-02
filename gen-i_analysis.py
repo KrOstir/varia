@@ -11,7 +11,6 @@ import pandas as pd
 # %%
 # Path to data
 geni_path = './data/geni/'
-
 # %%
 # All files
 fd_files = glob.glob(geni_path + "/*.xlsx")
@@ -65,9 +64,9 @@ geni_df['Mesec'] = geni_df['Mesec'].apply(data_replace)
 
 # %%
 # Convert MM-YY to datetime
-geni_df['Mesec'] = pd.to_datetime(geni_df['Mesec'], format='%m-%y') \
- \
-    # %%
+geni_df['Mesec'] = pd.to_datetime(geni_df['Mesec'], format='%m-%y')
+
+# %%
 # Set index
 geni_df.set_index('Mesec', inplace=True)
 
