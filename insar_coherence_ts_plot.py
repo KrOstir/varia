@@ -46,17 +46,23 @@ ts_df.index = pd.to_datetime(ts_df.index)
 
 # %%
 # Select one polygon
-tr_id = 4007
+# tr_id = 4007
+tr_id = 4020
+# tr_id = 4026
 ts_df_id = ts_df.xs(tr_id, level='ID_travnik', axis=1, drop_level=True)
 
 # %%
-ts_df_id_asc = ts_df_id.xs('ASC', level='orb', axis=1, drop_level=True).dropna()
-ts_df_id_des = ts_df_id.xs('DES', level='orb', axis=1, drop_level=True).dropna()
+# Average by polarisation
+ts_df_id_pol = ts_df_id.mean(axis=1, level=1)
 
 # %%
-ts_df_id_asc.plot()
+ts_df_id_pol['VH'].dropna().plot(style = 'r-', label = 'VH', alpha=0.3)
+ts_df_id_pol['VH'].dropna().rolling(5, center=True).mean().plot(style= 'r-', label='')
+ts_df_id_pol['VV'].dropna().plot(style = 'b-', label = 'VV', alpha=0.3)
+ts_df_id_pol['VV'].dropna().rolling(5, center=True).mean().plot(style= 'b-', label='')
+plt.legend()
 plt.show()
 
 # %%
-ts_df_id_des.plot()
+ts_df_id_pol.plot(marker='o')
 plt.show()
