@@ -58,6 +58,7 @@ ts_df_id = ts_df.xs(tr_id, level='ID_travnik', axis=1, drop_level=True)
 # Each orbit polarisation combination
 fig, ax = plt.subplots()
 ts_df_id_asc = ts_df_id.xs('ASC', level='orb', axis=1, drop_level=True).dropna()
+ts_df_id_asc = ts_df_id_asc.loc[~ts_df_id_asc.index.duplicated(keep='first')]
 ax = ts_df_id_asc.plot(alpha=0.3)
 ts_df_id_asc.rolling(10, center=True).mean().plot(ax = ax)
 plt.title(str(tr_id) + ' ASC')
@@ -79,7 +80,9 @@ ts_df_id_pol = ts_df_id.mean(axis=1, level=0)
 
 # %%
 ts_df_id_pol_asc = ts_df_id_pol['ASC'].dropna()
+ts_df_id_pol_asc = ts_df_id_pol_asc.loc[~ts_df_id_pol_asc.index.duplicated(keep='first')]
 ts_df_id_pol_des = ts_df_id_pol['DES'].dropna()
+ts_df_id_pol_des = ts_df_id_pol_des.loc[~ts_df_id_pol_des.index.duplicated(keep='first')]
 
 # %%
 # Plot polarisations
