@@ -45,19 +45,27 @@ r.text
 # %%
 # %%
 bib_json = json.loads(r.text[1:-1])
+bib_json['RECAPITUALITION'][0]
 
 # %%
-bib_json_recap = json.dumps(bib_json['RECAPITUALITION'])
+bib_fields = ['A1_Score',  'A11',  'A12',  'A3_Score',  'AI',  'AII',  'CI_10',  'CI_Max',  'h-index',  'Z']
+# %%
+bib_recap = {}
+for field in bib_fields:
+    print('Field: {}'.format(field))
+    bib_recap.update(
+        {
+            field:
+            float(bib_json['RECAPITUALITION'][0][field].replace(',', '.'))
+        }
+    )
+bib_recap
+
 
 # %%
-# bib_josn_recap['Z']
-bib_josn_recap
-# %%
-# %%
-
-
-
-
+bib_recap_df = pd.DataFrame()
+bib_recap_df = bib_recap_df.append(bib_recap, ignore_index=True)
+bib_recap_df
 
 # %%
 # Read
