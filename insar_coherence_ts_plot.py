@@ -10,6 +10,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import scipy.signal
 
 # %%
 # Filenames
@@ -133,3 +134,10 @@ plt.legend()
 plt.title(str(tr_id) + ' Orbits')
 # plt.show()
 plt.savefig(str(tr_id)+'_orb.png', dpi=300)
+
+# %%
+# Detect grass cutting
+fig, ax = plt.subplots()
+ts_df_id_pol_asc_sg = scipy.signal.savgol_filter(ts_df_id_pol_asc, 5, 2)
+plt.plot(ts_df_id_pol_asc_sg)
+plt.show()
