@@ -7,6 +7,7 @@
 
 # %%
 # Imports
+import os
 import pandas as pd
 import requests
 import json
@@ -15,7 +16,7 @@ import json
 # Filenames
 # List of mentors
 # mentors_in_fn = './data/go_seznam_mentorjev_2122.xlsx'
-mentors_in_fn = 'D:/Kristof/OneDrive - Univerza v Ljubljani/Grajeno okolje/Dokumenti/go_seznam_mentorjev_2122.xlsx'
+mentors_in_fn = 'C:/Users/krost/OneDrive - Univerza v Ljubljani/Grajeno okolje/Dokumenti/go_seznam_mentorjev_2122.xlsx'
 filename = os.path.splitext(mentors_in_fn)
 mentors_out_fn = filename[0] + '_sicris' + filename[1]
 
@@ -72,7 +73,7 @@ def sicris_get_info(mstid):
 # %%
 # Read mentors
 mentors_df = pd.read_excel(mentors_in_fn, dtype={'Sicris': 'Int64'})
-
+mentors_df.head()
 
 # %%
 # Get Sicris info
