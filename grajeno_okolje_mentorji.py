@@ -16,7 +16,8 @@ import json
 # Filenames
 # List of mentors
 # mentors_in_fn = './data/go_seznam_mentorjev_2122.xlsx'
-mentors_in_fn = 'C:/Users/krost/OneDrive - Univerza v Ljubljani/Grajeno okolje/Dokumenti/go_seznam_mentorjev_2122.xlsx'
+# mentors_in_fn = 'C:/Users/krost/OneDrive - Univerza v Ljubljani/Grajeno okolje/Dokumenti/go_seznam_mentorjev_2122.xlsx'
+mentors_in_fn = 'C:/Users/krost/Univerza v Ljubljani/Golobar, Monika - Grajeno okolje/Študijski odbor/Evidenca mentorjev GO/go_seznam_mentorjev.xlsx'
 filename = os.path.splitext(mentors_in_fn)
 mentors_out_fn = filename[0] + '_sicris' + filename[1]
 
