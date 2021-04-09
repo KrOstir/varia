@@ -7,6 +7,7 @@
 
 # %%
 # Imports
+import os
 import pandas as pd
 import requests
 import json
@@ -15,7 +16,8 @@ import json
 # Filenames
 # List of mentors
 # mentors_in_fn = './data/go_seznam_mentorjev_2122.xlsx'
-mentors_in_fn = 'D:/Kristof/OneDrive - Univerza v Ljubljani/Grajeno okolje/Dokumenti/go_seznam_mentorjev_2122.xlsx'
+# mentors_in_fn = 'C:/Users/krost/OneDrive - Univerza v Ljubljani/Grajeno okolje/Dokumenti/go_seznam_mentorjev_2122.xlsx'
+mentors_in_fn = 'C:/Users/krost/Univerza v Ljubljani/Golobar, Monika - Grajeno okolje/Študijski odbor/Evidenca mentorjev GO/go_seznam_mentorjev.xlsx'
 filename = os.path.splitext(mentors_in_fn)
 mentors_out_fn = filename[0] + '_sicris' + filename[1]
 
@@ -23,6 +25,7 @@ mentors_out_fn = filename[0] + '_sicris' + filename[1]
 # Sicris parameters
 mstid_url = 'https://www.sicris.si/Common/rest.aspx?sessionID=1234CRIS12002B01B01A03IZUMBFICDOSKJHS588Nn44131&fields=rsrid,&country=SI_JSON&entity=RSR&methodCall=mstid='
 bib_url = 'https://www.sicris.si/Common/rest.aspx?sessionID=1234CRIS12002B01B01A03IZUMBFICDOSKJHS588Nn44131&fields=&country=SI_JSON&entity=rsr&methodCall=id='
+sicris_url = 'https://www.sicris.si/public/jqm/rsr.aspx?lang=slv&opdescr=search&opt=2&subopt=300&code1=rsr&search_term='
 
 # %%
 # Sicris score return fields
@@ -34,7 +37,6 @@ bib_url = 'https://www.sicris.si/Common/rest.aspx?sessionID=1234CRIS12002B01B01A
 bib_fields = ['Z', 'A12', 'CI_10', 'h-index']
 # %%
 # Get recapitulazation data from Sicris
-
 
 def sicris_get_info(mstid):
     """
@@ -63,8 +65,34 @@ def sicris_get_info(mstid):
     return bib_r
 
 # %%
+# Get recapitulazation data from Sicris
+
+def research_field(field_si):
+    """
+    research_field Add English name for fied
+
+    Parameters
+    ----------
+    field_si : str
+        Field in Slovenina
+
+    Returns
+    -------
+    str
+        Field in English
+    """
+    fields = {
+        'Geodezija': 'Geodesy',
+        'Geologija': 'Geology',
+        'Gradbeništvo': 'Civil Engineering',
+        'Načrtovanje in urejanje prostora': 'Spatial Planning and Spatial Development'
+    }
+    field_en = fields[field_si]
+    return field_en
+
+# %%
 # # Sicris code
-# mstid = 8247
+# mstid = 15112
 # bib_recap = sicris_get_info(mstid)
 # bib_recap
 
@@ -72,7 +100,15 @@ def sicris_get_info(mstid):
 # %%
 # Read mentors
 mentors_df = pd.read_excel(mentors_in_fn, dtype={'Sicris': 'Int64'})
+mentors_df.head()
 
+# %%
+# Add English fields
+mentors_df['Field'] = mentors_df.apply(
+    lambda x: research_field(x['Smer']), axis=1)
+# %%
+# Add Sicris URL
+mentors_df['Sicris_URL'] = mentors_df['Sicris'].apply(lambda x: "{}{}".format(sicris_url, x))
 
 # %%
 # Get Sicris info
