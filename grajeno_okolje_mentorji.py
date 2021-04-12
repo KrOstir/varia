@@ -25,7 +25,8 @@ mentors_out_fn = filename[0] + '_sicris' + filename[1]
 # Sicris parameters
 mstid_url = 'https://www.sicris.si/Common/rest.aspx?sessionID=1234CRIS12002B01B01A03IZUMBFICDOSKJHS588Nn44131&fields=rsrid,&country=SI_JSON&entity=RSR&methodCall=mstid='
 bib_url = 'https://www.sicris.si/Common/rest.aspx?sessionID=1234CRIS12002B01B01A03IZUMBFICDOSKJHS588Nn44131&fields=&country=SI_JSON&entity=rsr&methodCall=id='
-sicris_url = 'https://www.sicris.si/public/jqm/rsr.aspx?lang=slv&opdescr=search&opt=2&subopt=300&code1=rsr&search_term='
+# sicris_url = 'https://www.sicris.si/public/jqm/rsr.aspx?lang=slv&opdescr=search&opt=2&subopt=300&code1=rsr&search_term='
+sicris_url = 'https://www.sicris.si/public/jqm/search_basic/slv/2/300/search/rsr/'
 
 # %%
 # Sicris score return fields
@@ -108,7 +109,7 @@ mentors_df['Field'] = mentors_df.apply(
     lambda x: research_field(x['Smer']), axis=1)
 # %%
 # Add Sicris URL
-mentors_df['Sicris_URL'] = mentors_df['Sicris'].apply(lambda x: "{}{}".format(sicris_url, x))
+mentors_df['Sicris_URL'] = mentors_df['Sicris'].apply(lambda x: "{}{}".format(sicris_url, str(x).zfill(5)))
 
 # %%
 # Get Sicris info
