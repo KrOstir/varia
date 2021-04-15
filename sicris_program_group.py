@@ -1,5 +1,5 @@
 # %%
-# Program gropup analysis
+# Program group analysis
 #
 # Krištof Oštir
 # (c) 2021
@@ -17,10 +17,24 @@ sicris_url = 'https://www.sicris.si/Common/rest.aspx?sessionID=1234CRIS12002B01B
 # API reference
 # https://www.sicris.si/public/jqm/memo.aspx?lang=slv&opdescr=faq&source=faq.inc&opt=5&subopt=2#8
 
+# %%
+# Abbreviate names
+
+def organization_field(id):
+
+    names = {
+        '0618': 'ZRC SAZU',
+        '0792': 'UL FGG'
+    }
+    organization = names[id]
+    return organization
+
 
 # %%
 # Files
 ps_members = './data/ps_clani.xlsx'
+# Where to put plots
+ps_plots = './data/'
 
 # %%
 # Get JSON
@@ -34,28 +48,49 @@ sicris_members_df = pd.DataFrame.from_dict(sicris_json['EMPLOY'])
 sicris_members_df.columns
 
 # %%
+# Add English fields
+sicris_members_df['ORG_NAME'] = sicris_members_df.apply(
+    lambda x: organization_field(x['ORG_MSTID']), axis=1)
+    
+# %%
 # Save to Excel
-sicris_members_df.to_excel(ps_members)
+sicris_members_df.to_excel(ps_members, index=False)
 
 # %%
-# Plot sicences of research
-sicris_members_df['NAME'].value_counts().plot(kind='pie')
+# Plot organizations of research
+fig, ax = plt.subplots()
+sicris_members_df['ORG_NAME'].value_counts().plot(kind='pie')
+plt.savefig(ps_plots + 'ps_organizations.png', dpi=300)
+plt.close()
 
 # %%
-# Plot sicences of research
+# Plot sciences of research
+fig, ax = plt.subplots(figsize=(8, 8))
 sicris_members_df['SCI_DESCR'].value_counts().plot(kind='pie')
+plt.savefig(ps_plots + 'ps_sciences.png', dpi=300)
+plt.close()
 
 # %%
 # Plot fields of research
+fig, ax = plt.subplots(figsize=(8, 8))
 sicris_members_df['FIL_DESCR'].value_counts().plot(kind='pie')
+plt.savefig(ps_plots + 'ps_fields.png', dpi=300)
+plt.close()
+
 
 # %%
 # Plot types
+fig, ax = plt.subplots(figsize=(8, 8))
 sicris_members_df['TYPE'].value_counts().plot(kind='pie')
+plt.savefig(ps_plots + 'ps_type.png', dpi=300)
+plt.close()
 
 # %%
 # Plot types
+fig, ax = plt.subplots(figsize=(8, 8))
 sicris_members_df['ROLECODE'].value_counts().plot(kind='pie')
+plt.savefig(ps_plots + 'ps_role.png', dpi=300)
+plt.close()
 
 # %%
 # Recapitualtion
