@@ -66,7 +66,7 @@ def sicris_get_info(mstid):
     return bib_r
 
 # %%
-# Get recapitulazation data from Sicris
+# Add English research fields
 
 def research_field(field_si):
     """
