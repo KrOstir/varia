@@ -33,6 +33,7 @@ df.set_index('Date', inplace=True)
 df.sort_index(inplace=True)
 
 # %%
+# Drop unnecessary columns
 df.drop(
     ['Experimental', 'Minimum QGIS version', 'Uploaded by'],
     axis=1, inplace=True)
@@ -52,21 +53,26 @@ df['Downloads_sum'] = df['Downloads'].cumsum()
 # %%
 # Plot downloads per time
 fig, ax = plt.subplots(figsize=(10, 8))
-plt.plot(df['Downloads'], drawstyle="steps-post")
-plt.fill_between(df.index, df['Downloads'], step="post", alpha=0.4)
-# plt.savefig(ps_plots + 'ps_sciences.png', dpi=300)
-plt.show()
-# plt.close()
+plt.plot(df['Downloads'], marker='.', markersize=10)
+# plt.fill_between(df.index, df['Downloads'], alpha=0.4)
+plt.title('Downloads per time')
+ax.set_xlabel('Date')
+ax.set_ylabel('Downloads')
+plt.savefig(rvt_plots + 'rvt_downloads_time.png', dpi=300)
+# plt.show()
+plt.close()
 
 # %%
 # Plot cumulative downloads per time
 fig, ax = plt.subplots(figsize=(10, 8))
-plt.plot(df['Downloads_sum'], drawstyle="steps-post")
-plt.fill_between(df.index, df['Downloads_sum'], step="post", alpha=0.4)
-# plt.savefig(ps_plots + 'ps_sciences.png', dpi=300)
-plt.show()
-# plt.close()
-
+plt.plot(df['Downloads_sum'], marker='.', markersize=10)
+plt.title('Cumulative downloads per time')
+ax.set_xlabel('Date')
+ax.set_ylabel('Downloads')
+# plt.fill_between(df.index, df['Downloads_sum'], step="mid", alpha=0.4)
+plt.savefig(rvt_plots + 'rvt_downloads_cummulative_time.png', dpi=300)
+# plt.show()
+plt.close()
 
 # %%
 # Group by major.minor
@@ -75,24 +81,40 @@ df_version = df.groupby(['Major', 'Minor']).agg('sum')
 # %%
 # Compute cumulative sum
 df_version['Downloads_sum'] = df_version[['Downloads']].cumsum()
-
-# %%
 df_version.reset_index(inplace=True)
 
 # %%
+# Generate major.minor versions
 df_version['Version'] = df_version['Major'].str.cat(df_version['Minor'],sep='.')
+
 # %%
 # Plot downloads per time
 fig, ax = plt.subplots(figsize=(10, 8))
-plt.plot(df_version['Version'], df_version['Downloads_sum'], drawstyle="steps-post")
-# df_version['Downloads_sum'].plot(drawstyle="steps-post")
+plt.plot(
+    df_version['Version'], df_version['Downloads_sum'],
+    marker='.', markersize=10)
+plt.title('Cumulative downloads per version')
+# df_version['Downloads_sum'].plot(drawstyle="steps-mid")
 # plt.fill_between(df.index, df_version['Downloads'], step="mid", alpha=0.4)
-# plt.savefig(ps_plots + 'ps_sciences.png', dpi=300)
-plt.show()
-# plt.close()
+ax.set_xlabel('Version (major.minor)')
+ax.set_ylabel('Downloads')
+# plt.show()
+plt.savefig(rvt_plots + 'rvt_downloads_cumulative_version.png', dpi=300)
+plt.close()
+
 # %%
-# %%
-type(df_version)
-# %%
-df_version
+# Plot downloads per time
+fig, ax = plt.subplots(figsize=(10, 8))
+plt.plot(
+    df_version['Version'], df_version['Downloads'],
+    marker='.', markersize=10)
+plt.title('Downloads per version')
+# df_version['Downloads_sum'].plot(drawstyle="steps-mid")
+# plt.fill_between(df.index, df_version['Downloads'], step="mid", alpha=0.4)
+ax.set_xlabel('Version (major.minor)')
+ax.set_ylabel('Downloads')
+# plt.show()
+plt.savefig(rvt_plots + 'rvt_downloads_version.png', dpi=300)
+plt.close()
+
 # %%
