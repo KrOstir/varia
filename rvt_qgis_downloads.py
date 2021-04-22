@@ -9,16 +9,23 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from dateutil import parser
+from urllib.request import Request, urlopen
 
 # %%
 # Files
-rvt_dl_fn = './data/rvt_qgis_plugins.csv'
 # Where to put plots
 rvt_plots = './data/'
+# Site
+site = "https://plugins.qgis.org/plugins/rvt-qgis/"
+
+# %%
+# Read webpage
+req = Request(site, headers={'User-Agent': 'Mozilla/5.0'})
+webpage = urlopen(req).read()
 
 # %%
 # Read downloads
-df = pd.read_csv(rvt_dl_fn)
+df = pd.read_html(webpage)[0]
 df.head()
 
 # %%
