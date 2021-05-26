@@ -14,7 +14,7 @@ from urllib.request import Request, urlopen
 # %%
 # Files
 # Where to put plots
-rvt_plots = './data/'
+rvt_plots = './figures/'
 # Site
 site = "https://plugins.qgis.org/plugins/rvt-qgis/"
 
@@ -27,6 +27,10 @@ webpage = urlopen(req).read()
 # Read downloads
 df = pd.read_html(webpage)[0]
 df.head()
+
+# %%
+# Replace noon with time
+df['Date'] = df['Date'].str.replace('noon','12:00 p.m.')
 
 # %%
 # Parse dates
@@ -123,5 +127,7 @@ ax.set_ylabel('Downloads')
 # plt.show()
 plt.savefig(rvt_plots + 'rvt_downloads_version.png', dpi=300)
 plt.close()
+
+# %%
 
 # %%

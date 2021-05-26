@@ -2,10 +2,12 @@
 .idea/
 .ipynb_checkpoints/
 .vs/
+.vscode/
 __pycache__/
 meteo_data/
 SkyView/
-.vscode/
+figures/
+
 # Extensions
 *$py.class
 *.log
@@ -16,3 +18,4 @@ SkyView/
 *.vrt
 *.csv
 *.xlsx
+
