@@ -6,6 +6,7 @@ __pycache__/
 meteo_data/
 SkyView/
 .vscode/
+figures/
 # Extensions
 *$py.class
 *.log
