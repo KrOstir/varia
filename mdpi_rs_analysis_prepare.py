@@ -1,3 +1,4 @@
+#%%
 # MDPI Remote Sensing
 #
 # Get paper metadata from web and store it in a csv file. Track all volumes,
@@ -6,33 +7,43 @@
 # Krištof Oštir
 # 2016-10-08
 
+#%%
 # Load libraries
 from bs4 import BeautifulSoup
 import requests
 
+#%%
 # Remote Sensing URL
 mdpi_url = "http://www.mdpi.com/"
 rs_url = "2072-4292/"
 mdpi_file_out = "mdpi_rs_analysis.csv"
 
+#%%
 print("Analyzing ", mdpi_url+rs_url)
 
+#%%
 mdpi_f = open(mdpi_file_out, 'w+')
 print("Volume,Issue,Paper,URL", file=mdpi_f)
 
+#%%
 # Find volumes
 mdpi_r = requests.get(mdpi_url+rs_url)
 soup = BeautifulSoup(mdpi_r.text, "lxml")
 volumes = []
 for link in soup.find_all('a'):
+    print(link)
     link_url = link.get('href')
     if link_url == None:
         continue
     if rs_url in link_url:
         volumes.append('/'.join(link_url.split('/')[1:3]))
+
+#%%
 # Extract only volumes
 volumes = sorted(list(set(volumes)))
+volumes
 
+#%%
 for vol in volumes:
     b = vol.rfind("/")
     i = int(vol[b + 1:])
@@ -69,5 +80,8 @@ for vol in volumes:
                 entry = "{0}, {1}, {2}, {3}".format(i, j, p, url_p)
                 print(entry, file=mdpi_f)
 
+#%%
 # Close file
 mdpi_f.close()
+
+# %%
