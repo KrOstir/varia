@@ -5,12 +5,14 @@
 # all issues and all papers
 #
 # Krištof Oštir
-# 2016-10-08
+# 2021-05
 
 # %%
 # Load libraries
-from bs4 import BeautifulSoup
-import requests
+import urllib.request as ul
+import pandas as pd
+from bs4 import BeautifulSoup as soup
+
 
 # %%
 # Remote Sensing URL
@@ -18,81 +20,105 @@ import requests
 mdpi_url = 'http://www.mdpi.com/'
 rs_issn = '2072-4292'
 rs_url = 'journal/remotesensing'
-mdpi_file_out = 'mdpi_rs_analysis.csv'
+mdpi_file_out = '/data/mdpi_rs_analysis.csv'
 
 # %%
-print('Analyzing ', mdpi_url+rs_issn)
+print('Analyzing ISSN:', rs_issn)
 
 # %%
-mdpi_f = open(mdpi_file_out, 'w+')
-print("Volume,Issue,Paper,URL", file=mdpi_f)
-
+mdpi_df = pd.DataFrame(columns=['vol_n', 'issue_n', 'articles'])
+mdpi_df
 
 # %%
 # Create list of volumes
 volumes = []
-i = 1
-while True:
-    r_url = '{0}/{1}'.format(rs_issn, i)
-    mdpi_r = requests.get(mdpi_url + r_url, headers={'User-Agent': 'Mozilla/5.0'})
-    if mdpi_r.status_code == 200:
-        print('Found volume {}'.format(r_url))
-        volumes.append(r_url)
-        i += 1
-    else:
-        break
+url = mdpi_url + rs_url
+req = ul.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+client = ul.urlopen(req)
+htmldata = client.read()
+client.close()
+# Create soup
+pagesoup = soup(htmldata, "html.parser")
+# Volumes info
+itemlocator = pagesoup.findAll('div', {"class": "journal-browser-volumes"})
+for link in itemlocator[0].findAll('a'):
+    volumes.append(link.get('href'))
+
+# %%
+volumes
+# %%
+vol = volumes[1]
+
+# %%
+
+url = mdpi_url + vol
+req = ul.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+client = ul.urlopen(req)
+htmldata = client.read()
+client.close()
+# Create soup
+pagesoup = soup(htmldata, "html.parser")
 
 
 # %%
-vol = volumes[0]
-
-# for vol in volumes[0:1]:
-print('Processing Volume', vol)
-vol_url = mdpi_url+vol+'/'
-url_i = mdpi_url+vol_url
-url_ir = requests.get(url_i, headers={'User-Agent': 'Mozilla/5.0'})
+vol
 # %%
-
-# %%
-soup = BeautifulSoup(url_ir.text, 'html.parser')
-# %%
-soup.findAll('div', {"class":"ul-spaced"})
-# %%
-soup.find_all('a')
-
-# %%
+# Issues
 issues = []
-for link in soup.find_all('a'):
-    link_url = link.get('href')
-    if link_url == None:
-        continue
-    if vol_url in link_url:
-        issues.append(link_url)
-print(issues)
-    # issues = sorted(set(issues))
-    # for link in issues:
-    #     k = link.rfind('/')
-    #     j = int(link[k + 1:])
-    #     print('Volume', i, 'Issue', j)
-    #     iss_url = vol_url+str(j)+'/'
-    #     url_ij = mdpi_url + iss_url
-    #     url_ijr = requests.get(url_ij)
-    #     soup_j = BeautifulSoup(url_ijr.text, 'lxml')
-    #     for link_j in soup_j.find_all('a'):
-    #         link_url_j = link_j.get('href')
-    #         if link_url_j == None:
-    #             continue
-    #         if (iss_url in link_url_j) & ('pdf' in link_url_j):
-    #             l = link_url_j.rfind('/pdf')
-    #             m = len(iss_url) + 1
-    #             p = int(link_url_j[m:l])
-    #             url_p = mdpi_url + link_url_j[1:l]
-    #             entry = '{0}, {1}, {2}, {3}'.format(i, j, p, url_p)
-    #             # print(entry, file=mdpi_f)
-    #             print(entry)
+itemlocator = pagesoup.findAll('div', {"class": "ul-spaced"})
+for link in itemlocator[0].findAll('a'):
+    iss = link.get('href')
+    if iss.startswith(vol):
+        issues.append(link.get('href'))
+        print(link.get('href'))
+
 
 # %%
-# Close file
-mdpi_f.close()
+# Remove duplicates from list
+def remove_duplicates(list):
+    res = []
+    [res.append(x) for x in list if x not in res]
+
+    return res
+
+
+# %%
+issues = remove_duplicates(issues)
+issues
+
+# %%
+issue = issues[3]
+issue
+
+# %%
+url = mdpi_url + issue
+req = ul.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+client = ul.urlopen(req)
+htmldata = client.read()
+client.close()
+# Create soup
+pagesoup = soup(htmldata, "html.parser")
+
+# %%
+# Papers
+itemlocator = pagesoup.find_all('h1')[0]
+
+# itemlocator = pagesoup.findAll('div', {"class":"generic-item article-item"})
+
+# %%
+articles = int(str(itemlocator).split()[-3])
+print(articles)
+
+
+# %%
+vol_n = int(vol.split('/')[-1])
+issue_n = int(issue.split('/')[-1])
+# %%
+df = pd.DataFrame([[vol_n, issue_n, articles]], columns=[
+                  'vol_n', 'issue_n', 'articles'])
+print(df)
+
+# %%
+mdpi_df.append(df)
 
 # %%
