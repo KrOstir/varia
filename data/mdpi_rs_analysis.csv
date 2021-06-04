@@ -1,4 +1,4 @@
-vol_n,issue_n,articles
+Volume,Issue,Paper
 2,1,18
 2,2,13
 2,3,14
@@ -81,7 +81,6 @@ vol_n,issue_n,articles
 13,7,179
 13,8,196
 13,9,260
-13,10,159
 12,1,201
 12,2,140
 12,3,248

@@ -55,13 +55,13 @@ print('Analyzing ISSN:', rs_issn)
 if skip and os.path.isfile(mdpi_file):
     mdpi_df = pd.read_csv(mdpi_file)
     # Delete last record as papers might have updates
-    l_v = mdpi_df['vol_n'].max()
-    l_i = mdpi_df['issue_n'][mdpi_df['vol_n']==l_v].max()
+    l_v = mdpi_df['Volume'].max()
+    l_i = mdpi_df['Issue'][mdpi_df['Volume']==l_v].max()
     mdpi_df.drop(mdpi_df[
-        (mdpi_df['vol_n'] == l_v) & (mdpi_df['issue_n'] == l_i)].index,
+        (mdpi_df['Volume'] == l_v) & (mdpi_df['Issue'] == l_i)].index,
         inplace=True)
 else:
-    mdpi_df = pd.DataFrame(columns=['vol_n', 'issue_n', 'articles'])
+    mdpi_df = pd.DataFrame(columns=['Volume', 'Issue', 'Paper'])
 
 
 # %%
@@ -115,7 +115,7 @@ for vol in volumes:
         # print(vol_n, issue_n)
 
         # Skip if volume in DF
-        if (vol_n in mdpi_df['vol_n'].values) & (issue_n in mdpi_df['issue_n'].values):
+        if (vol_n in mdpi_df['Volume'].values) & (issue_n in mdpi_df['Issue'].values):
             continue
 
         # Get URL
@@ -138,7 +138,7 @@ for vol in volumes:
 
 # %%
 # Add new data
-df = pd.DataFrame(papers, columns=['vol_n', 'issue_n', 'articles'])
+df = pd.DataFrame(papers, columns=['Volume', 'Issue', 'Paper'])
 mdpi_df = mdpi_df.append(df)
 
 # %%

@@ -1,20 +1,21 @@
 # %%
 # MDPI Remote Sensing
 #
-# Analyse paper statistics, read paper rada from CSV
+# Analyze paper statistics
+# Read paper data from CSV produced by mdpi_rs_analysis_prepare.py
 #
 # Krištof Oštir
-# 2016-10-08
+# 2021-06
 
 # %%
 # Load libraries
 import pandas as pd
-import numpy as np
+import matplotlib.pyplot as plt
 
 # %%
 # Input data
-mdpi_file_stat = 'mdpi_rs_analysis.csv'
-mdpi_file_out = 'mdpi_rs_analysis.xlsx'
+mdpi_file_stat = './data/mdpi_rs_analysis.csv'
+mdpi_file_out = './data/mdpi_rs_analysis.xlsx'
 
 # %%
 print('Analyzing MDPI Remote Sensing')
@@ -23,29 +24,47 @@ print('Analyzing MDPI Remote Sensing')
 # Read data
 mdpi = pd.read_csv(mdpi_file_stat)
 mdpi = mdpi.sort_values(by=['Volume', 'Issue', 'Paper'])
-# mdpi['Pages'] = mdpi['Paper'].shift(-1).diff()
-# mdpi['Pages'][mdpi['Pages'] <= 1] = np.nan
-
-# mdpi = mdpi[mdpi.columns[0:3]]
-# print(mdpi.head())
+# Remove last year
+l_v = mdpi['Volume'].max()
+mdpi.drop(
+    mdpi[mdpi['Volume'] == l_v].index,
+    inplace=True)
 
 # %%
 # Group by volume and issue, count papers
-mdpi_gr_vi = pd.DataFrame(mdpi.groupby(['Volume', 'Issue'])['Paper'].count().reset_index(name = 'Papers'))
-mdpi_gr_v = pd.DataFrame(mdpi.groupby(['Volume'])['Paper'].count().reset_index(name = 'Papers'))
+mdpi_gr_vi = pd.DataFrame(mdpi.groupby(['Volume', 'Issue'])[
+                          'Paper'].sum().reset_index(name='Papers'))
+mdpi_gr_v = pd.DataFrame(mdpi.groupby(['Volume'])[
+                         'Paper'].sum().reset_index(name='Papers'))
+
+# Add years
 mdpi_gr_v['Year'] = 2008 + mdpi_gr_v['Volume']
-# mdpi_gr_vp = pd.DataFrame(mdpi.groupby(['Volume'])['Pages'].mean().reset_index(name = 'Papers'))
+mdpi_gr_vi['Year'] = 2008 + mdpi_gr_vi['Volume']
 
 # %%
-# Average number of pages per volume
-# print('Pages per paper', mdpi_gr_vp['Papers'][0:6].mean())
+# Change index
+mdpi_gr_v.set_index('Year', inplace=True)
+mdpi_gr_v.drop(['Volume'], inplace=True, axis=1)
+
 
 # %%
-# Save statistics to Excel
-writer = pd.ExcelWriter(mdpi_file_out, engine='xlsxwriter')
-mdpi_gr_v.to_excel(writer, sheet_name='Volumes')
-mdpi_gr_vi.to_excel(writer, sheet_name='Issues')
-mdpi.to_excel(writer, sheet_name='Papers')
-writer.save()
+# Change index
+mdpi_gr_vi.set_index(['Year', 'Issue'], inplace=True)
+mdpi_gr_vi.drop(['Volume'], inplace=True, axis=1)
+
+
+# %%
+# Per year
+plt.figure()
+mdpi_gr_v.plot(marker='o')
+plt.legend(frameon=False)
+plt.show()
+
+# %%
+# Per year and issue
+plt.figure()
+mdpi_gr_vi.plot()
+plt.legend(frameon=False)
+plt.show()
 
 # %%
