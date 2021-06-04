@@ -47,6 +47,7 @@ mdpi_file = './data/mdpi_rs_analysis.csv'
 skip = True
 
 # %%
+# Start processing
 print('Analyzing ISSN:', rs_issn)
 
 # %%
@@ -55,18 +56,13 @@ if skip and os.path.isfile(mdpi_file):
     mdpi_df = pd.read_csv(mdpi_file)
     # Delete last record as papers might have updates
     l_v = mdpi_df['vol_n'].max()
-    l_i = mdpi_df['issue_n'].max()
+    l_i = mdpi_df['issue_n'][mdpi_df['vol_n']==l_v].max()
     mdpi_df.drop(mdpi_df[
         (mdpi_df['vol_n'] == l_v) & (mdpi_df['issue_n'] == l_i)].index,
         inplace=True)
 else:
     mdpi_df = pd.DataFrame(columns=['vol_n', 'issue_n', 'articles'])
 
-# %%
-mdpi_df.head()
-
-# Papers list
-papers = []
 
 # %%
 # Create list of volumes
@@ -83,9 +79,15 @@ itemlocator = pagesoup.findAll('div', {"class": "journal-browser-volumes"})
 for link in itemlocator[0].findAll('a'):
     volumes.append(link.get('href'))
 
-1  # %%
+# %%
+volumes
+
+# %%
+# Iterate over all volumes
+papers = []
 for vol in volumes:
     print('Processing {}'.format(vol))
+    # Check new papers
 
     url = mdpi_url + vol
     req = ul.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
@@ -106,9 +108,11 @@ for vol in volumes:
 
     # Process issues
     for issue in tqdm(issues):
+    # for issue in issues:
         # Volume and issue
         vol_n = int(vol.split('/')[-1])
         issue_n = int(issue.split('/')[-1])
+        # print(vol_n, issue_n)
 
         # Skip if volume in DF
         if (vol_n in mdpi_df['vol_n'].values) & (issue_n in mdpi_df['issue_n'].values):
