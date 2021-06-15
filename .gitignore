@@ -17,3 +17,6 @@ figures/
 *.user
 *.vrt
 *.xlsx
+meteo_data_*.csv
+bicikelj_station_*.csv
+krskolesom_station_*.csv
