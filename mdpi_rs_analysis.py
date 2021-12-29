@@ -7,10 +7,10 @@
 # Krištof Oštir
 # 2021-06
 
+import matplotlib.pyplot as plt
 # %%
 # Load libraries
 import pandas as pd
-import matplotlib.pyplot as plt
 
 # %%
 # Input data
