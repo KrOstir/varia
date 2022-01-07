@@ -13,7 +13,7 @@ from datetime import timedelta
 
 # %%
 # File names
-exam_file_fn = 'C:/Users/krost/OneDrive - Univerza v Ljubljani/Predavanja/izpiti/izpiti_202021_letni.xlsx'
+exam_file_fn = 'D:/Kristof/OneDrive - Univerza v Ljubljani/Predavanja/izpiti/izpiti_202122_letni.xlsx'
 cal_file_fn = './data/' + exam_file_fn.split('/')[-1].split('.')[0] + '.csv'
 
 # %%
