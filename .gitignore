@@ -8,6 +8,7 @@ meteo_data/
 SkyView/
 .vscode/
 figures/
+dask-worker-space/
 # Extensions
 *$py.class
 *.log
