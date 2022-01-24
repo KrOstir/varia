@@ -19,24 +19,24 @@
 # University of Ljubljana, Faculty of Civil and Geodetic Engineering
 # (c) 2018
 
-# Imports
+#%% Imports
 import requests
 import os
 import json
 import pandas as pd
 import datetime
 
-# Basic URL for queries
+#%% Basic URL for queries
 meteo_url = "http://www.vreme.si"
 meteo_url_q = meteo_url + "/uploads/probase/www/nowcast/inca/"
 # Data folder
 meteo_data = "./meteo_data/"
 
-# Open log file, all messages are written to log
+#%% Open log file, all messages are written to log
 meteo_log = "meteo_get_data_" + datetime.datetime.now().strftime('%y%m') + ".log"
 log_file = open(meteo_log, "a")
 
-# Available datasets
+#%% Available datasets
 meteo_prod = {
     'clouds': "inca_sp_data",
     'prec': "inca_tp_data",
@@ -46,7 +46,7 @@ meteo_prod = {
     'radar': "inca_si0zm_data"
     }
 
-# Downland images for hail and radar
+#%% Downland images for hail and radar
 print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), end="", file=log_file)
 meteo_par = ["hail", "radar"]
 for par in meteo_par:
