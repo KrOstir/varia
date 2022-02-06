@@ -7,9 +7,9 @@
 # Krištof Oštir
 # 2021-06
 
-import matplotlib.pyplot as plt
 # %%
 # Load libraries
+import matplotlib.pyplot as plt
 import pandas as pd
 
 # %%
@@ -67,4 +67,15 @@ mdpi_gr_vi.plot()
 plt.legend(frameon=False)
 plt.show()
 
+# %%
+mdpi_gr_vi_r = mdpi_gr_vi.copy()
+
+# %%
+mdpi_gr_vi_r['Rolling'] = mdpi_gr_vi_r.rolling(10, center=True).mean()
+
+# %%
+plt.figure()
+mdpi_gr_vi_r.plot()
+plt.legend(frameon=False)
+plt.show()
 # %%
