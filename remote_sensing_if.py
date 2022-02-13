@@ -109,7 +109,6 @@ if_df.to_csv(if_fn, index=False)
 
 # %%
 if_df.drop('ISSN', inplace=True, axis=1)
-# %%
 
 # %%
 if_wide = if_df.groupby(['Leto', 'Naslov serijske publikacije']).agg('sum')
@@ -134,9 +133,9 @@ plt.xlabel('Year')
 plt.ylabel('IF')
 plt.xticks([2000, 2005, 2010, 2015, 2020])
 plt.tight_layout()
-plt.savefig(plots_folder + 'remote_sensing_if.png', dpi=600)
+# plt.savefig(plots_folder + 'remote_sensing_if.png', dpi=600)
 # plt.savefig(plots_folder + 'remote_sensing_if.pdf', dpi=600)
-# plt.show()
+plt.show()
 plt.close()
 
 # %%
