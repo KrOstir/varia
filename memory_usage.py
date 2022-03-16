@@ -11,7 +11,7 @@ from io import StringIO
 import matplotlib.pyplot as plt
 
 # Memory dump
-memory_copy = '''
+memory_copy = """
  Google Chrome	148,6 MB	17,8 MB	42	569	3008	Kristof	0,7	2:50,43	1	64 bit	0 bytes	0 bytes	0	0		-	No	No	0 bytes	0 bytes	0 bytes	0 bytes	0 bytes	No	No		0 bytes	No	Yes
  Google Chrome Helper	146,2 MB	0 bytes	18	145	4879	Kristof	2,0	3,24		64 bit	0 bytes	0 bytes	0	0		-	No	No	0 bytes	0 bytes	0 bytes	0 bytes	0 bytes	No	Yes		0 bytes	No	Yes
  Google Chrome Helper	143,5 MB	0 bytes	17	141	4887	Kristof	0,2	3,30		64 bit	0 bytes	0 bytes	0	0		-	No	No	0 bytes	0 bytes	0 bytes	0 bytes	0 bytes	No	Yes		0 bytes	No	Yes
@@ -49,36 +49,38 @@ memory_copy = '''
  com.apple.Safari.ImageDecoder	3,3 MB	1,7 MB	2	43	4073	Kristof	0,0	0,08	0	64 bit	0 bytes	0 bytes	0	0		-	No	No	0 bytes	0 bytes	0 bytes	0 bytes	0 bytes	Yes	Yes		0 bytes	No	Yes
  com.apple.SafariServices	1,6 MB	1,2 MB	2	40	2267	Kristof	0,0	0,03	0	64 bit	0 bytes	0 bytes	0	0		-	No	No	0 bytes	0 bytes	0 bytes	0 bytes	0 bytes	Yes	No		0 bytes	No	Yes
  SafariCloudHistoryPushAgent	1,4 MB	348 KB	4	49	386	Kristof	0,0	5,88	1	64 bit	0 bytes	0 bytes	0	0		-	No	No	0 bytes	0 bytes	0 bytes	0 bytes	0 bytes	Yes	No		0 bytes	No	Yes
-'''
+"""
 
 # Clean memory dump and make dataframe
-memory_copy = memory_copy.replace(',', '.')
-memory_copy = memory_copy.replace('\t', ',')
+memory_copy = memory_copy.replace(",", ".")
+memory_copy = memory_copy.replace("\t", ",")
 data_io = StringIO(memory_copy)
 memory_df = pd.read_csv(data_io, header=None)
 # Rename columns
 memory_df = memory_df[memory_df.columns[0:2]]
-memory_df.columns = ['Process', 'Memory']
+memory_df.columns = ["Process", "Memory"]
 # Strip process names
 memory_df.Process = memory_df.Process.str.lstrip()
 # Convert memory units
-memory_df.Memory= memory_df.Memory.str.split()
-memory_df['Size'] = memory_df.Memory.str[0].astype(float)
-memory_df['Size KB'] = memory_df['Size'] * (memory_df.Memory.str[1] == 'KB') * 1
-memory_df['Size MB'] =  memory_df['Size'] * (memory_df.Memory.str[1] == 'MB') * 1024
-memory_df['Size GB'] = memory_df['Size'] * (memory_df.Memory.str[1] == 'GB') * 1024 * 1024
-memory_df['Size'] = memory_df['Size KB'] + memory_df['Size MB'] + memory_df['Size GB']
-memory_df = memory_df[['Process', 'Size']]
+memory_df.Memory = memory_df.Memory.str.split()
+memory_df["Size"] = memory_df.Memory.str[0].astype(float)
+memory_df["Size KB"] = memory_df["Size"] * (memory_df.Memory.str[1] == "KB") * 1
+memory_df["Size MB"] = memory_df["Size"] * (memory_df.Memory.str[1] == "MB") * 1024
+memory_df["Size GB"] = (
+    memory_df["Size"] * (memory_df.Memory.str[1] == "GB") * 1024 * 1024
+)
+memory_df["Size"] = memory_df["Size KB"] + memory_df["Size MB"] + memory_df["Size GB"]
+memory_df = memory_df[["Process", "Size"]]
 # Find browser, Chrome and Firefox are listed, everything else is Safari
-memory_df['Browser'] = 'Safari'
-memory_df.loc[memory_df['Process'].str.startswith('Google'),'Browser'] = 'Chrome'
-memory_df.loc[memory_df['Process'].str.startswith('Firefox'),'Browser'] = 'Firefox'
+memory_df["Browser"] = "Safari"
+memory_df.loc[memory_df["Process"].str.startswith("Google"), "Browser"] = "Chrome"
+memory_df.loc[memory_df["Process"].str.startswith("Firefox"), "Browser"] = "Firefox"
 
 # Memory usage by browser
-print('Browser memory usage')
-memory_browser_df = memory_df.groupby('Browser').sum()
+print("Browser memory usage")
+memory_browser_df = memory_df.groupby("Browser").sum()
 print(memory_browser_df)
 
 # Plot memory usage
-memory_browser_df.plot(kind='bar')
+memory_browser_df.plot(kind="bar")
 plt.show()

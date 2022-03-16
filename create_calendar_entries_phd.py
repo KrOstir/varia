@@ -1,4 +1,3 @@
-
 # coding: utf-8
 
 # # Create PhD metings calendar
@@ -25,12 +24,16 @@ cal_file_fn = "D:/Kristof/OneDrive - Univerza v Ljubljani/Lectures/Grajeno okolj
 
 buf = io.StringIO()
 # Read and clean file
-txt_file = open(txt_file_fn, encoding='utf-8')
+txt_file = open(txt_file_fn, encoding="utf-8")
 text = txt_file.read().splitlines()
 
 for line in text:
-    line = line.strip().replace("Študijski odbor doktorskega študija\t", "").replace(" ", "")
-    if line.endswith('uri'):
+    line = (
+        line.strip()
+        .replace("Študijski odbor doktorskega študija\t", "")
+        .replace(" ", "")
+    )
+    if line.endswith("uri"):
         line = line.replace("ob", " ").replace("uri", "")
         buf.write(line + "\n")
         print(line)
@@ -53,7 +56,7 @@ calendar
 # In[ ]:
 
 
-calendar["Start"] = pd.to_datetime(calendar[0], format = '%d.%m.%Y %H.')
+calendar["Start"] = pd.to_datetime(calendar[0], format="%d.%m.%Y %H.")
 
 
 # In[ ]:
@@ -73,10 +76,10 @@ calendar
 # In[ ]:
 
 
-calendar['StartDate'] = calendar['Start'].apply(lambda x:x.date())
-calendar['StartTime'] = calendar['Start'].apply(lambda x:x.time())
-calendar['EndDate'] = calendar['End'].apply(lambda x:x.date())
-calendar['EndTime'] = calendar['End'].apply(lambda x:x.time())
+calendar["StartDate"] = calendar["Start"].apply(lambda x: x.date())
+calendar["StartTime"] = calendar["Start"].apply(lambda x: x.time())
+calendar["EndDate"] = calendar["End"].apply(lambda x: x.date())
+calendar["EndTime"] = calendar["End"].apply(lambda x: x.time())
 
 
 # In[ ]:
@@ -93,4 +96,3 @@ calendar
 cal_file = open(cal_file_fn, "w")
 calendar.to_csv(cal_file)
 cal_file.close()
-

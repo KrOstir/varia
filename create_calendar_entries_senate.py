@@ -26,8 +26,8 @@ text
 # %%
 for line in text:
     line = line.strip().replace(" ", "")
-    if line.endswith('uri'):
-        line = line.split("seja",1)[1]
+    if line.endswith("uri"):
+        line = line.split("seja", 1)[1]
         line = line.replace("ob", " ").replace("uri", "")
         print(line)
         buf.write(line + "\n")
@@ -43,7 +43,7 @@ calendar
 
 
 # %%
-calendar["Start"] = pd.to_datetime(calendar[0], format = '%d.%m.%Y %H.%M')
+calendar["Start"] = pd.to_datetime(calendar[0], format="%d.%m.%Y %H.%M")
 
 
 # %%
@@ -57,10 +57,10 @@ calendar
 
 
 # %%
-calendar['StartDate'] = calendar['Start'].apply(lambda x:x.date())
-calendar['StartTime'] = calendar['Start'].apply(lambda x:x.time())
-calendar['EndDate'] = calendar['End'].apply(lambda x:x.date())
-calendar['EndTime'] = calendar['End'].apply(lambda x:x.time())
+calendar["StartDate"] = calendar["Start"].apply(lambda x: x.date())
+calendar["StartTime"] = calendar["Start"].apply(lambda x: x.time())
+calendar["EndDate"] = calendar["End"].apply(lambda x: x.date())
+calendar["EndTime"] = calendar["End"].apply(lambda x: x.time())
 
 
 # %%
@@ -80,6 +80,3 @@ cal_file.close()
 
 
 # %%
-
-
-

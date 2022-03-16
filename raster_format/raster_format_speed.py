@@ -9,7 +9,8 @@
 
 import os
 import numpy as np
-np.seterr(divide='ignore', invalid='ignore')
+
+np.seterr(divide="ignore", invalid="ignore")
 from osgeo import gdal, gdal_array
 from datetime import datetime
 
@@ -28,7 +29,7 @@ files = [
     ["D:/GeoData/Sentinel/format/S2A_20160814_gtiff_int.tif", 3, 4],
     ["D:/GeoData/Sentinel/format/S2A_20160814_img_float.img", 3, 4],
     ["D:/GeoData/Sentinel/format/S2A_20160814_img_int.img", 3, 4],
-    ["D:/GeoData/Sentinel/format/S2A_20160814_jpeg2000_int.jp2", 3, 4]
+    ["D:/GeoData/Sentinel/format/S2A_20160814_jpeg2000_int.jp2", 3, 4],
 ]
 
 # Compute NDVI
@@ -41,7 +42,7 @@ def ndvi(nir, red):
     :return: NDVI
     """
     result = (nir - red) / (nir + red)
-    result[~ np.isfinite(result)] = -1.0
+    result[~np.isfinite(result)] = -1.0
     return result
 
 
@@ -62,4 +63,7 @@ for im_in in files:
     im_nir = np.array(im_file.GetRasterBand(im_in[2]).ReadAsArray())
     im_ndvi = ndvi(im_nir, im_red)
     process_time = datetime.now() - process_start
-    print("%s, %s, %s, %s" % (im_in_name, name[-2], name[-1].split(".")[0], str(process_time)))
+    print(
+        "%s, %s, %s, %s"
+        % (im_in_name, name[-2], name[-1].split(".")[0], str(process_time))
+    )

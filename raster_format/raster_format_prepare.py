@@ -15,7 +15,9 @@ from osgeo import gdal
 # Original file, GeoTIFF, float
 # raster_original = "D:/GeoData/Sentinel/s2_space/S2A_MSIL2A_V20160107T101243_20160107T200822_20m/S2A_OPER_MSI_L2A_20160107T200822_R122_V20160107T101243__ms_p2atm_gk.tif"
 raster_original = "D:/GeoData/Sentinel/s2_space/S2A_MSIL2A_V20160814T100032_20160814T234109_10m/S2A_OPER_MSI_L2A_20160814T234109_R122_V20160814T100032__ms_p2atm_gk.tif"
-raster_original_root = raster_original.split("/")[-1][:4] + raster_original.split("/")[-1][17:25]
+raster_original_root = (
+    raster_original.split("/")[-1][:4] + raster_original.split("/")[-1][17:25]
+)
 # Output
 raster_conv = "D:/GeoData/Sentinel/format/"
 raster_conv_name = raster_conv + raster_original_root
@@ -23,7 +25,7 @@ raster_conv_name_float = raster_conv_name + "_gtiff_float.tif"
 raster_conv_name_int = raster_conv_name + "_gtiff_int.tif"
 gdal_tr = "gdal_translate -a_srs EPSG:3912 -of %s %s %s"
 gdal_tr_int = "gdal_translate -a_srs EPSG:3912 -ot Int16 -of %s %s %s"
-gdal_calc = "gdal_calc -A %s --A_band=%s --outfile=%s --calc=\"A*1000\""
+gdal_calc = 'gdal_calc -A %s --A_band=%s --outfile=%s --calc="A*1000"'
 
 # Check if file exists
 if not os.path.exists(raster_original):
@@ -47,7 +49,7 @@ raster_original_im = gdal.Open(raster_original)
 bands = raster_original_im.RasterCount
 print(bands)
 results = []
-for i in range(1, bands+1):
+for i in range(1, bands + 1):
     print(i, end=".")
     out_fn = "D:/GeoData/Sentinel/format/" + "raster_%s.tif" % i
     results.append(out_fn)
@@ -55,7 +57,7 @@ for i in range(1, bands+1):
     os.system(calc)
 print()
 # Merge
-merge_fn = ' '.join(str(e) for e in results)
+merge_fn = " ".join(str(e) for e in results)
 merge_result = "D:/GeoData/Sentinel/format/raster.tif"
 gdal_merge = "gdal_merge -separate -of GTiff -o %s %s" % (merge_result, merge_fn)
 os.system(gdal_merge)
@@ -77,5 +79,9 @@ os.system(translate)
 translate = gdal_tr % ("ENVI", raster_conv_name_int, raster_conv_name + "_envi_int")
 os.system(translate)
 # Create JPEG2000 int
-translate = gdal_tr % ("JP2OpenJPEG", raster_conv_name_int, raster_conv_name + "_jpeg2000_int.jp2")
+translate = gdal_tr % (
+    "JP2OpenJPEG",
+    raster_conv_name_int,
+    raster_conv_name + "_jpeg2000_int.jp2",
+)
 os.system(translate)

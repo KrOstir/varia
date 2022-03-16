@@ -1,10 +1,10 @@
 # coding: utf-8
 # %%
 # Download images from the NextGEN Gallery (WordPress)
-# 
+#
 # Use list of base URLs and download all images in the gallery.
-# 
-# Krištof Oštir  
+#
+# Krištof Oštir
 # 2018-09-19
 # %%
 
@@ -30,7 +30,7 @@ print("URL:", gallery_url)
 print("Reading ...")
 page = requests.get(gallery_url).text
 print("Parsing ...")
-soup = BeautifulSoup(page, 'html.parser')
+soup = BeautifulSoup(page, "html.parser")
 
 # %% Total and new images
 gal_new = 0
@@ -40,8 +40,8 @@ img_urls = []
 # %% Check all URLs
 print("Finding images ...")
 img_urls = []
-for link in soup.find_all('a', href=True):
-    img_url = link['href']
+for link in soup.find_all("a", href=True):
+    img_url = link["href"]
     # If URL is image download it
     if img_url.endswith(".jpg") and gal_id in img_url:
         img_urls.append(img_url)
@@ -50,7 +50,7 @@ for link in soup.find_all('a', href=True):
 print("Downloading images ...")
 gal_num = len(img_urls)
 for i, link in enumerate(img_urls, start=1):
-    img_fn = link[link.rindex("/") + 1:]
+    img_fn = link[link.rindex("/") + 1 :]
     img_name = image_folder + img_fn
     if os.path.exists(img_name):
         skip_yn = True
@@ -58,7 +58,7 @@ for i, link in enumerate(img_urls, start=1):
     else:
         print("%d/%d Downloading -" % (i, gal_num), img_fn)
         img_data = requests.get(link).content
-        with open(img_name, 'wb') as handler:
+        with open(img_name, "wb") as handler:
             handler.write(img_data)
             gal_new += 1
 print("")

@@ -33,18 +33,18 @@ meteo_url_q = meteo_url + "/uploads/probase/www/nowcast/inca/"
 meteo_data = "./meteo_data/"
 
 #%% Open log file, all messages are written to log
-meteo_log = "meteo_get_data_" + datetime.datetime.now().strftime('%y%m') + ".log"
+meteo_log = "meteo_get_data_" + datetime.datetime.now().strftime("%y%m") + ".log"
 log_file = open(meteo_log, "a")
 
 #%% Available datasets
 meteo_prod = {
-    'clouds': "inca_sp_data",
-    'prec': "inca_tp_data",
-    'temp': "inca_t2m_data",
-    'wind': "inca_wind_data",
-    'hail': "inca_hp_data",
-    'radar': "inca_si0zm_data"
-    }
+    "clouds": "inca_sp_data",
+    "prec": "inca_tp_data",
+    "temp": "inca_t2m_data",
+    "wind": "inca_wind_data",
+    "hail": "inca_hp_data",
+    "radar": "inca_si0zm_data",
+}
 
 #%% Downland images for hail and radar
 print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), end="", file=log_file)
@@ -54,7 +54,7 @@ for par in meteo_par:
     meteo_req_url = meteo_url_q + meteo_prod[par] + ".json"
     meteo_req_url
     # Get DF of meteo data
-    meteo_df = pd.read_json(meteo_req_url, convert_dates=['valid'])
+    meteo_df = pd.read_json(meteo_req_url, convert_dates=["valid"])
     # DL links
     meteo_dl = meteo_url + meteo_df["path"]
     # Download new images
@@ -65,7 +65,7 @@ for par in meteo_par:
         if not os.path.exists(item_fn):
             response = requests.get(item)
             if response.status_code == 200:
-                with open(item_fn, 'wb') as f:
+                with open(item_fn, "wb") as f:
                     f.write(response.content)
                 dl_num += 1
             else:
